@@ -45,6 +45,28 @@ Creator= Mr-Nilarnab
   - A command is unrecognized
   - Wikipedia search fails or no results are found
   - The system encounters fetch errors
+ 
+### **6. Wikipedia Search Integration**
+
+Voice-Activated Search: Users can ask Jarvis to search Wikipedia by speaking commands like:
+
+“Search Wikipedia for Iron Man”
+
+“Search Wikipedia for Artificial Intelligence”
+
+Summary Retrieval: Jarvis fetches concise article summaries from Wikipedia’s REST API and reads them aloud, displaying the result on-screen.
+
+Handles Ambiguity: If a topic has multiple meanings, Jarvis notifies the user and can open the main Wikipedia page for further exploration.
+
+Why Wikipedia?
+
+Comprehensive Knowledge Base: Wikipedia has millions of articles across countless topics.
+
+Free and Open Access: Allows easy integration without licensing restrictions.
+
+Structured API: Provides summaries and links that are perfect for voice-based assistants.
+
+Lightweight Summaries for TTS: Short summaries make spoken responses fast and clear.
 
 ---
 
