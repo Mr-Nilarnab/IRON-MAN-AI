@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Assistant</title>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            padding: 20px;
+        }
+
+        .central-core { 
+            width: 400px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.9));
+            box-shadow: 0 0 100px 20px rgba(255, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            animation: pulse 3s infinite;
+        } 
+
+
+    @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .central-core img {
+            width: 420px;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .interface-section {
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px;
+            color: #ffffff;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .interface-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 70px rgba(255, 0, 0, 1);
+        }
+
+        .interface-section h3, .interface-section p {
+            color: #ffffff;
+            animation: text-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes text-glow {
+            0% { text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
+            100% { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000; }
+        }
+
+        .top-left, .top-right, .bottom-left, .bottom-right {
+            position: absolute;
+            border-radius: 15px;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.9);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.7);
+            color: #ff5e00;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .top-left { top: 40px; left: 40px; width: 420px; }
+        .top-right { top: 40px; right: 40px; width: 420px; }
+        .bottom-left { bottom: 40px; left: 40px; width: 500px; height: 300px; overflow-y: auto; }
+        .bottom-right { bottom: 40px; right: 40px; width: 500px; height: 300px; overflow-y: auto; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .diagnostic-item {
+            color: #ff0000;
+            margin: 10px 0;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: text-glow 3s ease-in-out infinite alternate;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 5px;
+            background: #333;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-fill {
+            width: 0;
+            height: 100%;
+            background: #ff0000;
+            animation: load 2s infinite;
+        }
+
+        @keyframes load {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        button {
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+            animation: button-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes button-glow {
+            0% { background-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            100% { background-color: #cc0000; box-shadow: 0 0 40px rgba(255, 0, 0, 0.9); }
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+        }
+    </style>
+
+</head>
+<body>
+ <div class="container">
+        <div class="central-core">
+            <img src="circle-iron man power.png" alt="JARVIS Core">
+        </div>
+
+        <div class="interface-section top-left">
+            <h3>User: Nilarnab</h3>
+            <p>System: JARVIS OS v5.0</p>
+            <p>Network: Active</p>
+            <p>Location: ND Industries</p>
+        </div>
+
+        <div class="interface-section top-right">
+            <h3>Time: <span id="time"></span></h3>
+            <h4>Date: <span id="date"></span></h4>
+            <p>Weather: 30°C, Clear</p>
+        </div>
+
+        <div class="interface-section bottom-left">
+            <h3>System Diagnostics</h3>
+            <div class="diagnostic-item">
+                <p>Processors=</p>
+                <div class="loading-bar"><div class="loading-fill"></div></div>
+            </div>
+            <div class="diagnostic-item">
+                <p>Memory=</p>
+                <div class="loading-bar"><div class="loading-fill"></div></div>
+            </div>
+            <div class="diagnostic-item">
+                <p>Security=</p>
+                <div class="loading-bar"><div class="loading-fill"></div></div>
+            </div>
+        </div>
+        <div class="interface-section bottom-right">
+            <h3>🎧 Voice Command</h3>
+            <button onclick="startListening()">Voice Command</button>
+            <p>Output: <span id="outputText"></span></p>
+
+            <h3>📚 Search Wikipedia</h3>
+            <button class="wiki-search-btn" onclick="startWikiSearch()">Voice Search</button>
+            <div id="wikiResult" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+
+
+ <script>
+          document.addEventListener('DOMContentLoaded', startupSequence);
+
+        function startupSequence() {
+            const startupMessages = [
+    " Welcome back Sir."
+               ];
+
+            let delay = 0;
+
+            startupMessages.forEach((message) => {
+                setTimeout(() => {
+                    speakResult(message);
+                }, delay);
+                delay += 2000;
+            });
+
+            setTimeout(() => {
+                const hour = new Date().getHours();
+                const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+                speakResult(`${greeting},. Currently, it is ${new Date().toLocaleTimeString()}. I am Jarvis, online        and ready. How may I assist you?`);
+              }, delay);
+            }
+
+
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const voiceRecognitionCommands = new SpeechRecognition();
+  const wikiRecognition = new SpeechRecognition();
+
+  voiceRecognitionCommands.lang = 'en-US';
+  wikiRecognition.lang = 'en-US';
+  voiceRecognitionCommands.continuous = false;
+  wikiRecognition.continuous = false;
+
+  const commands = {
+    "open google": "Opening Google...",
+    "open youtube": "Opening YouTube...",
+    "open chatgpt": "Opening ChatGPT...",
+    "open github": "Opening GitHub...",
+    "open facebook": "Opening Facebook...",
+    "open instagram": "Opening Instagram...",
+    "open linkedin": "Opening LinkedIn...",
+    "open stack overflow": "Opening Stack Overflow...",
+    "open reddit": "Opening Reddit...",
+    "open amazon": "Opening Amazon...",
+    "open spotify": "Opening Spotify...",
+    "open maps": "Opening Google Maps..."
+  };
+
+  const urls = {
+    "open google": "https://www.google.com",
+    "open youtube": "https://www.youtube.com",
+    "open chatgpt": "https://chat.openai.com",
+    "open github": "https://github.com",
+    "open facebook": "https://www.facebook.com",
+    "open instagram": "https://www.instagram.com",
+    "open linkedin": "https://www.linkedin.com",
+    "open stack overflow": "https://stackoverflow.com",
+    "open reddit": "https://www.reddit.com",
+    "open amazon": "https://www.amazon.com",
+    "open spotify": "https://open.spotify.com",
+    "open maps": "https://maps.google.com"
+  };
+
+  // === Voice Commands ===
+  function startListening() {
+    document.getElementById('outputText').textContent = "🎤 Listening for command...";
+    voiceRecognitionCommands.start();
+  }
+
+  voiceRecognitionCommands.onresult = function (event) {
+    const transcript = event.results[0][0].transcript.toLowerCase();
+    let foundCommand = null;
+    for (const cmd in commands) {
+      if (transcript.includes(cmd)) {
+        foundCommand = cmd;
+        break;
+      }
+    }
+    const output = foundCommand ? commands[foundCommand] : "Command not recognized.";
+    document.getElementById('outputText').textContent = output;
+    speakResult(output);
+    if (foundCommand && urls[foundCommand]) window.open(urls[foundCommand], "_blank");
+  };
+
+  voiceRecognitionCommands.onerror = e => {
+    document.getElementById('outputText').textContent = "Voice Command Error: " + e.error;
+  };
+
+  // === Wikipedia Search ===
+  function startWikiSearch() {
+    document.getElementById('wikiResult').innerHTML = "🎤 Listening for Wikipedia topic...";
+    wikiRecognition.start();
+  }
+
+  wikiRecognition.onresult = e => {
+    const query = e.results[0][0].transcript.trim();
+    document.getElementById('wikiResult').innerHTML = `<p>🔎 Searching Wikipedia for: <b>${query}</b></p>`;
+    searchWikipedia(query);
+  };
+
+  wikiRecognition.onerror = e => {
+    document.getElementById('wikiResult').innerHTML = "Wiki Search Error: " + e.error;
+  };
+
+async function searchWikipedia(query) {
+  try {
+    const searchURL = `https://en.wikipedia.org/w/api.php?origin=*&action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json`;
+    const res = await fetch(searchURL);
+    const data = await res.json();
+
+    if (data.query && data.query.search && data.query.search.length > 0) {
+      const firstResult = data.query.search[0];
+      const pageTitle = firstResult.title;
+
+      // Fetch the summary of the first search result
+      const summaryURL = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageTitle)}`;
+      const summaryRes = await fetch(summaryURL);
+      const summaryData = await summaryRes.json();
+
+      const shortExtract = summaryData.extract.length > 600
+        ? summaryData.extract.substring(0, 600) + "..."
+        : summaryData.extract;
+
+      document.getElementById('wikiResult').innerHTML = `<p><b>${summaryData.title}</b>: ${shortExtract}</p>`;
+      speakResult(shortExtract);
+    } else {
+      const msg = `No results found for "${query}".`;
+      document.getElementById('wikiResult').innerHTML = `<p>${msg}</p>`;
+      speakResult(msg);
+    }
+  } catch (err) {
+    document.getElementById('wikiResult').innerHTML = `Error: ${err.message}`;
+    speakResult("There was an error fetching the data.");
+  }
+}
+
+  function speakResult(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Clock
+  setInterval(() => {
+    const now = new Date();
+    document.getElementById('time').textContent = now.toLocaleTimeString();
+    document.getElementById('date').textContent = now.toDateString();
+  }, 1000);
+</script>
+</body>
+</html>
